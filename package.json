@@ -1,0 +1,49 @@
+{
+  "name": "multikey-webcrypto",
+  "version": "0.0.1",
+  "date": "2024-08-14",
+  "description": "Conversions to and from multikeys and WebCrypto",
+  "main": "dist/index.ts",
+  "scripts": {
+    "dist": "tsc -d",
+    "docs": "./node_modules/.bin/typedoc index.ts lib/*",
+    "test": "./node_modules/.bin/ts-node tests/roundtrip.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iherman/multikey-webcrypto.git"
+  },
+  "keywords": [
+    "security",
+    "crypto",
+    "verifiable credentials"
+  ],
+  "author": "Ivan Herman <ivan@w3.org> (https://www.w3.org/People/Ivan/)",
+  "license": "W3C-20150513",
+  "bugs": {
+    "url": "https://github.com/iherman/multikey-webcrypto/issues"
+  },
+  "homepage": "https://github.com/iherman/multikey-webcrypto#readme",
+  "files": [
+    "LICENSE.md",
+    "README.md",
+    "dist/**/*"
+  ],
+  "engines": {
+    "node": ">=22.6.0"
+  },
+  "dependencies": {
+    "@noble/curves": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.1.0",
+    "@typescript-eslint/parser": "^8.1.0",
+    "eslint": "^9.9.0",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.26.5",
+    "typedoc-material-theme": "^1.1.0",
+    "typedoc-theme-hierarchy": "^5.0.3",
+    "typescript": "^5.5.4"
+  }
+}
