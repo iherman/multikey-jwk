@@ -7,7 +7,8 @@
   "scripts": {
     "dist": "tsc -d",
     "docs": "./node_modules/.bin/typedoc index.ts lib/*",
-    "test": "./node_modules/.bin/ts-node tests/roundtrip.ts"
+    "test_jwk": "./node_modules/.bin/ts-node tests/roundtrip_jwk.ts",
+    "test_cry": "./node_modules/.bin/ts-node tests/roundtrip_cry.ts"
   },
   "repository": {
     "type": "git",

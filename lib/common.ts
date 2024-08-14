@@ -12,18 +12,6 @@ export interface JWKKeyPair {
     secret?: JsonWebKey;
 }
 
-/**
- * Typeguard for JWK Key Pair. 
- * It is not really elaborate, it only tries to differentiate between a JWK Single Key and a Key Pair.
- * 
- * @param obj 
- * @returns is it a JWKKeyPair?
- */
-// deno-lint-ignore no-explicit-any
-export function isJWKKeyPair(obj: any): obj is JWKKeyPair {
-    return (obj as JWKKeyPair).public !== undefined;
-}
-
 /** 
  * Type for a Multikey
  * 
@@ -38,18 +26,6 @@ export type Multikey = string;
 export interface MultikeyPair {
     publicKeyMultibase: Multikey;
     secretKeyMultibase?: Multikey;
-}
-
-/**
- * Typeguard for a Multikey Pair.
- * It is not really elaborate, it only tries to differentiate between a single Multikey and a Key Pair.
- * 
- * @param obj 
- * @returns is it a MultikeyPair?
- */
-// deno-lint-ignore no-explicit-any
-export function isMultikeyPair(obj: any): obj is MultikeyPair {
-    return (obj as MultikeyPair).publicKeyMultibase !== undefined;
 }
 
 /**
