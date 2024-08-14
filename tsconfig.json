@@ -20,7 +20,7 @@
         "target": "esnext"
     },
     "typesRoots": ["types", "node_modules/@types"],
-    "include": ["lib/**/*", "index.ts"],
+    "include": ["lib/**/*", "index.ts","lib/encodings/base64.ts", "lib/encodings/base58/**/*"],
     "exclude": ["extras/**/*", "example/**/*", "tests/**/*", "tester/**/*", ".Attic/**/*"],
     "typedocOptions": {
         "plugin": ["typedoc-theme-hierarchy"],
