@@ -45,7 +45,7 @@ export function multikeyToJWK(keys: MultikeyPair | Multikey): JWKKeyPair | JsonW
  * those that would lead to error in this package. E.g., it does not check whether the x (and possibly y) values
  * are identical in the secret and private JWK keys.
  * 
- * Works for `ecdsa` (both `P-384` and `P`-256`), and `eddsa`.
+ * Works for `ecdsa` (both `P-384` and `P-256`), and `eddsa`.
  * 
  * @param keys 
  * @throws - exceptions if something is incorrect in the incoming data
