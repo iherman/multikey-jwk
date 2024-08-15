@@ -1,4 +1,4 @@
-import { JWKKeyPair, Multikey, JWKToMultikey, multikeyToJWK } from "../index";
+import { Multibase, JWKToMultikey, multikeyToJWK } from "../index";
 
 /** ----------------------------- */
 
@@ -17,7 +17,7 @@ export function str(inp: any): void {
 async function main(): Promise<void> {
     const onePair = async (label: string, key: CryptoKey): Promise<void> => {
         const key_jwk: JsonWebKey = await crypto.subtle.exportKey("jwk", key);
-        const mk: Multikey        = JWKToMultikey(key_jwk);
+        const mk: Multibase       = JWKToMultikey(key_jwk);
         const gen_jwk: JsonWebKey = multikeyToJWK(mk);
 
         console.log(`----\n${label}:`);

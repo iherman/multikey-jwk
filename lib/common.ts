@@ -6,32 +6,34 @@
 import * as eddsa from "./eddsa";
 import * as ecdsa from "./ecdsa";
 
-
+/**
+ * Public/secret pair of JWK instances
+ */
 export interface JWKKeyPair {
     public: JsonWebKey;
     secret?: JsonWebKey;
 }
 
 /** 
- * Type for a Multikey
+ * Type for a Multibase
  * 
  * One day this could become a string with a fixed regexp...
  */
-export type Multikey = string;
+export type Multibase = string;
 
 /**
- * Pair of keys in Multikey encoding. Using the field names as defined in the 
+ * Pair of keys in Multibase encoding. Using the field names as defined in the 
  * [Multikey specification](https://www.w3.org/TR/controller-document/#multikey).
  */
-export interface MultikeyPair {
-    publicKeyMultibase: Multikey;
-    secretKeyMultibase?: Multikey;
+export interface Multikey {
+    publicKeyMultibase:  Multibase;
+    secretKeyMultibase?: Multibase;
 }
 
 /**
- * Same as the Multikey Pair, but decoded and without the preambles. Just the bare key values.
+ * Same as the Multikey, but decoded and without the preambles. I.e., just the bare key values.
  */
-export interface MultikeyPairBinary {
+export interface MultikeyBinary {
     public:  Uint8Array;
     secret?: Uint8Array
 }
@@ -41,7 +43,7 @@ export interface MultikeyPairBinary {
 /************************************************************************* */
 
 /**
- * Names for the various crypto curves
+ * Names for the various crypto curve
  */
 export enum CryptoCurves {
     ECDSA_384 = "secp384r1",
@@ -138,7 +140,7 @@ export const classToDecoder: ClassToDecoder = {
  * Type definition for the table mapping curves to their encoder functions (i.e., mapping the JWK to Multikey).
  */
 export type ClassToEncoder = {
-    [key in CryptoCurves]: (keyCurve: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, _y?: Uint8Array) => MultikeyPairBinary
+    [key in CryptoCurves]: (keyCurve: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, _y?: Uint8Array) => MultikeyBinary
 }
 
 /**

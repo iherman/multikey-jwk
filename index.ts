@@ -6,13 +6,13 @@
  * @package
  */
 
-import * as convert                                from './lib/convert';
-import { JWKKeyPair, MultikeyPair, Multikey }      from './lib/common';
-export type { JWKKeyPair, MultikeyPair, Multikey } from './lib/common';
+import * as convert                            from './lib/convert';
+import { JWKKeyPair, Multikey, Multibase }     from './lib/common';
+export type { JWKKeyPair, Multikey, Multibase} from './lib/common';
 
 // This type guard function is reused at two different places, better factor it out...
-function isMultikeyPair(obj: any): obj is MultikeyPair {
-    return (obj as MultikeyPair).publicKeyMultibase !== undefined;
+function isMultikeyPair(obj: any): obj is Multikey {
+    return (obj as Multikey).publicKeyMultibase !== undefined;
 }
 
 /* =========================================================================================
@@ -29,17 +29,17 @@ Converting multikeys to JWK
  * @param keys 
  * @throws - exceptions if something is incorrect in the incoming data
  */
-export function multikeyToJWK(keys: MultikeyPair): JWKKeyPair;
+export function multikeyToJWK(keys: Multikey): JWKKeyPair;
 
 /**
  * Overloaded version of the conversion function for a single (public) key in Multikey, returning the generated JWK.
  * @param keys 
  * @throws - exceptions if something is incorrect in the incoming data
  */
-export function multikeyToJWK(keys: Multikey): JsonWebKey;
+export function multikeyToJWK(keys: Multibase): JsonWebKey;
 
-export function multikeyToJWK(keys: MultikeyPair | Multikey): JWKKeyPair | JsonWebKey {
-    const input: MultikeyPair = isMultikeyPair(keys) ? keys as MultikeyPair : { publicKeyMultibase: keys };
+export function multikeyToJWK(keys: Multikey | Multibase): JWKKeyPair | JsonWebKey {
+    const input: Multikey = isMultikeyPair(keys) ? keys as Multikey : { publicKeyMultibase: keys };
     const jwk_keys = convert.multikeyToJWK(input);
     if (isMultikeyPair(keys)) {
         return jwk_keys;
@@ -64,18 +64,18 @@ Converting multikeys to WebCrypto
  * @throws - exceptions if something is incorrect in the incoming data
  * @async
  */
-export async function multikeyToCrypto(keys: MultikeyPair): Promise<CryptoKeyPair>;
+export async function multikeyToCrypto(keys: Multikey): Promise<CryptoKeyPair>;
 
 /**
  * Overloaded version of the conversion function for a single (public) key in Multikey, returning the generated Crypto Key.
  * @param keys 
  * @throws - exceptions if something is incorrect in the incoming data
  */
-export async function multikeyToCrypto(keys: Multikey): Promise<CryptoKey>;
+export async function multikeyToCrypto(keys: Multibase): Promise<CryptoKey>;
 
 // Implementation of the overloaded functions
-export async function multikeyToCrypto(keys: MultikeyPair | Multikey): Promise<CryptoKeyPair | CryptoKey> {
-    const input: MultikeyPair = isMultikeyPair(keys) ? keys as MultikeyPair : { publicKeyMultibase: keys };
+export async function multikeyToCrypto(keys: Multikey | Multibase): Promise<CryptoKeyPair | CryptoKey> {
+    const input: Multikey = isMultikeyPair(keys) ? keys as Multikey : { publicKeyMultibase: keys };
     const jwkPair: JWKKeyPair = multikeyToJWK(input);
 
     const algorithm: { name: string, namedCurve ?: string } = { name : "" };
@@ -129,17 +129,17 @@ Converting JWK to multikeys
  * @param keys 
  * @throws - exceptions if something is incorrect in the incoming data
  */
-export function JWKToMultikey(keys: JWKKeyPair): MultikeyPair;
+export function JWKToMultikey(keys: JWKKeyPair): Multikey;
 
 /**
  * Overloaded version of the conversion function for a single (public) key in JWK, returning the generated Multikey.
  * @param keys
  * @throws - exceptions if something is incorrect in the incoming data
  */
-export function JWKToMultikey(keys: JsonWebKey): Multikey;
+export function JWKToMultikey(keys: JsonWebKey): Multibase;
 
 // Implementation of the overloaded functions
-export function JWKToMultikey(keys: JWKKeyPair | JsonWebKey): MultikeyPair | Multikey {
+export function JWKToMultikey(keys: JWKKeyPair | JsonWebKey): Multikey | Multibase {
     function isJWKKeyPair(obj: any): obj is JWKKeyPair {
         return (obj as JWKKeyPair).public !== undefined;
     }
@@ -168,17 +168,17 @@ Converting WebCrypto to multikeys
  * @throws - exceptions if something is incorrect in the incoming data
  * @async
  */
-export async function cryptoToMultikey(keys: CryptoKeyPair): Promise<MultikeyPair>;
+export async function cryptoToMultikey(keys: CryptoKeyPair): Promise<Multikey>;
 
 /**
  * Overloaded version of the conversion function for a single (public) key in JWK, returning the generated Multikey.
  * @param keys
  * @throws - exceptions if something is incorrect in the incoming data
  */
-export async function cryptoToMultikey(keys: CryptoKey): Promise<Multikey>;
+export async function cryptoToMultikey(keys: CryptoKey): Promise<Multibase>;
 
 // Implementation of the overloaded functions
-export async function cryptoToMultikey(keys: CryptoKeyPair | CryptoKey): Promise<MultikeyPair | Multikey> {
+export async function cryptoToMultikey(keys: CryptoKeyPair | CryptoKey): Promise<Multikey | Multibase> {
     function isCryptoKeyPair(obj: any): obj is CryptoKeyPair {
         return (obj as CryptoKeyPair).publicKey !== undefined;
     }
@@ -195,7 +195,7 @@ export async function cryptoToMultikey(keys: CryptoKeyPair | CryptoKey): Promise
     }
 
     // Ready for conversion
-    const output: MultikeyPair = JWKToMultikey(jwkKeyPair);
+    const output: Multikey = JWKToMultikey(jwkKeyPair);
 
     // Return the right version
     if (isPair) {

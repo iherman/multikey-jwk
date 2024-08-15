@@ -4,8 +4,8 @@
  * 
  * @module
  */
-import { JWKKeyPair, MultikeyPairBinary, CryptoCurves } from "./common";
-import * as base64                                      from "./encodings/base64";
+import { JWKKeyPair, MultikeyBinary, CryptoCurves } from "./common";
+import * as base64                                  from "./encodings/base64";
 
 /**
  * Convert the Crypto values from JWK to the equivalent Multikey Pairs' binary data. 
@@ -20,7 +20,7 @@ import * as base64                                      from "./encodings/base64
  * @param _y - unused in this function, just a placeholder
  * @returns 
  */
-export function JWKToMultikeyBinary(_cl: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, _y?: Uint8Array): MultikeyPairBinary {
+export function JWKToMultikeyBinary(_cl: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, _y?: Uint8Array): MultikeyBinary {
     return {
         public: x,
         secret: d,

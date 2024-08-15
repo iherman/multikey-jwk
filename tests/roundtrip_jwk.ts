@@ -1,4 +1,4 @@
-import { JWKKeyPair, MultikeyPair, JWKToMultikey, multikeyToJWK } from "../index";
+import { JWKKeyPair, Multikey, JWKToMultikey, multikeyToJWK } from "../index";
 
 /** ----------------------------- */
 
@@ -23,8 +23,9 @@ async function toJWK(newPair: CryptoKeyPair): Promise<JWKKeyPair> {
 async function main(): Promise<void> {
     const onePair = async (label: string, pair: CryptoKeyPair): Promise<void> => {
         const keyPair: JWKKeyPair = await toJWK(pair);
-        const mk: MultikeyPair = JWKToMultikey(keyPair);
-        const mkPair: JWKKeyPair = multikeyToJWK(mk);
+        const mk: Multikey        = JWKToMultikey(keyPair);
+        const mkPair: JWKKeyPair  = multikeyToJWK(mk);
+
         console.log(`----\n${label}:`);
         console.log("Original:")
         str(keyPair);

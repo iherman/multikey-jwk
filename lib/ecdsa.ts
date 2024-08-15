@@ -8,8 +8,8 @@
  * @module
  */
 
-import { JWKKeyPair, MultikeyPairBinary, CryptoCurves } from "./common";
-import * as base64                                      from "./encodings/base64";
+import { JWKKeyPair, MultikeyBinary, CryptoCurves } from "./common";
+import * as base64                                  from "./encodings/base64";
 
 /**
  * Convert the Crypto values from JWK to the equivalent Multikey Pairs' binary data. 
@@ -27,7 +27,7 @@ import * as base64                                      from "./encodings/base64
  * @param y - y value for the elliptical curve
  * @returns 
  */
-export function JWKToMultikeyBinary(cl: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, y?: Uint8Array): MultikeyPairBinary {
+export function JWKToMultikeyBinary(cl: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, y?: Uint8Array): MultikeyBinary {
     if (y === undefined) {
         throw new Error("ECDSA encoding requires a 'y' value.");
     }
