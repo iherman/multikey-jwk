@@ -3,14 +3,13 @@
  *
  * @module
  */
-import { JWKKeyPair, MultikeyPair } from "./common";
+import { JWKKeyPair, Multikey } from "./common";
 /****************************************************************************************/
 /****************************************************************************************/
 /**
  * Generic function to convert a multikey pair to JWK. This function decodes the multikey data
  * into a binary buffer, checks the preambles and invokes the crypto curve specific converter functions
- * (depending on the preamble values) that do the final
- * conversion from the binary data to JWK.
+ * (depending on the preamble values) that do the final conversion from the binary data to JWK.
  *
  * Works for ecdsa (both P-384 and P-256), and eddsa.
  *
@@ -18,7 +17,7 @@ import { JWKKeyPair, MultikeyPair } from "./common";
  * @returns
  * @throws - exceptions if something is incorrect in the incoming data
  */
-export declare function multikeyToJWK(keys: MultikeyPair): JWKKeyPair;
+export declare function multikeyToJWK(keys: Multikey): JWKKeyPair;
 /**
  * Convert JWK Key pair to Multikeys. This function decodes the JWK keys, finds out which binary key it encodes
  * and converts the key to the multikey versions depending on the exact curve.
@@ -31,4 +30,4 @@ export declare function multikeyToJWK(keys: MultikeyPair): JWKKeyPair;
 
  * @param keys
  */
-export declare function JWKToMultikey(keys: JWKKeyPair): MultikeyPair;
+export declare function JWKToMultikey(keys: JWKKeyPair): Multikey;

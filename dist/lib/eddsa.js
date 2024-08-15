@@ -10,13 +10,13 @@ const base64 = require("./encodings/base64");
  * For EDDSA, this is essentially, an empty function, which simply returns the `x` and `d` values. The
  * interface is there to be reused by the ECDSA equivalent, which must do some extra processing.
  *
- * @param _cl - unused in this function, just a placeholder
+ * @param _curve - unused in this function, just a placeholder
  * @param x - x value for the elliptical curve, as extracted from JWK
  * @param d - d (private) value for the elliptical curve, as extracted from JWK
  * @param _y - unused in this function, just a placeholder
  * @returns
  */
-function JWKToMultikeyBinary(_cl, x, d, _y) {
+function JWKToMultikeyBinary(_curve, x, d, _y) {
     return {
         public: x,
         secret: d,
@@ -30,12 +30,12 @@ function JWKToMultikeyBinary(_cl, x, d, _y) {
  * constant JWK structure. The interface is there to be reused by the ECDSA equivalent, which must
  * do some extra processing.
  *
- * @param _cl - unused in this function, just a placeholder
+ * @param _curve - unused in this function, just a placeholder
  * @param xb - binary version of the x value for the elliptical curve
  * @param db - binary version of the d value for the elliptical curve
  * @returns
  */
-function multikeyBinaryToJWK(_cl, xb, db) {
+function multikeyBinaryToJWK(_curve, xb, db) {
     const x = base64.encode(xb);
     const output = {
         public: {

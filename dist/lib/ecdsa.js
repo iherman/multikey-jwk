@@ -23,18 +23,18 @@ const base64 = require("./encodings/base64");
  * (The y value is set as optional in the signature but that is only to make TypeScript happy. A missing
  * value generates an error)
  *
- * @param cl - choice between P-256 and P-384
+ * @param curve - choice between P-256 and P-384
  * @param x - x value for the elliptical curve
  * @param d - d (private) value for the elliptical curve
  * @param y - y value for the elliptical curve
  * @returns
  */
-function JWKToMultikeyBinary(cl, x, d, y) {
+function JWKToMultikeyBinary(curve, x, d, y) {
     if (y === undefined) {
         throw new Error("ECDSA encoding requires a 'y' value.");
     }
     return {
-        public: compressPublicKey(cl, x, y),
+        public: compressPublicKey(curve, x, y),
         secret: d
     };
 }
@@ -46,21 +46,21 @@ function JWKToMultikeyBinary(cl, x, d, y) {
  * constant JWK structure. The interface is there to be reused by the ECDSA equivalent, which must
  * do some extra processing.
  *
- * @param cl - choice between P-256 and P-384
+ * @param curve - choice between P-256 and P-384
  * @param xb - binary version of the x value for the elliptical curve
  * @param db - binary version of the d value for the elliptical curve
  * @returns
  */
-function multikeyBinaryToJWK(cl, xb, db) {
+function multikeyBinaryToJWK(curve, xb, db) {
     // The extra complication with ECDSA: the multikey is the compressed 'x' value, the 'y' value
     // must be calculated.
-    const uncompressed = uncompressPublicKey(cl, xb);
+    const uncompressed = uncompressPublicKey(curve, xb);
     const x = base64.encode(uncompressed.x);
     const y = base64.encode(uncompressed.y);
     const output = {
         public: {
             kty: "EC",
-            crv: (cl === common_1.CryptoCurves.ECDSA_256) ? "P-256" : "P-384",
+            crv: (curve === common_1.CryptoCurves.ECDSA_256) ? "P-256" : "P-384",
             x,
             y,
             key_ops: [
@@ -72,7 +72,7 @@ function multikeyBinaryToJWK(cl, xb, db) {
     if (db !== undefined) {
         output.secret = {
             kty: "EC",
-            crv: (cl === common_1.CryptoCurves.ECDSA_256) ? "P-256" : "P-384",
+            crv: (curve === common_1.CryptoCurves.ECDSA_256) ? "P-256" : "P-384",
             x,
             y,
             d: base64.encode(db),

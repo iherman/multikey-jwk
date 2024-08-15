@@ -16,8 +16,7 @@ const base64 = require("./encodings/base64");
 /**
  * Generic function to convert a multikey pair to JWK. This function decodes the multikey data
  * into a binary buffer, checks the preambles and invokes the crypto curve specific converter functions
- * (depending on the preamble values) that do the final
- * conversion from the binary data to JWK.
+ * (depending on the preamble values) that do the final conversion from the binary data to JWK.
  *
  * Works for ecdsa (both P-384 and P-256), and eddsa.
  *

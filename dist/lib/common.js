@@ -1,38 +1,18 @@
 "use strict";
+/**
+ * Common types, conversion functions and Multikey conversion utilities for the rest of the code.
+ * @module
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ECDSACurves = exports.classToEncoder = exports.classToDecoder = exports.classToPreamble = exports.Ecdsa384Preambles = exports.Ecdsa256Preambles = exports.EddsaPreambles = exports.CryptoKeyTypes = exports.CryptoCurves = void 0;
-exports.isJWKKeyPair = isJWKKeyPair;
-exports.isMultikeyPair = isMultikeyPair;
 exports.preambleToCryptoData = preambleToCryptoData;
 const eddsa = require("./eddsa");
 const ecdsa = require("./ecdsa");
-/**
- * Typeguard for JWK Key Pair.
- * It is not really elaborate, it only tries to differentiate between a JWK Single Key and a Key Pair.
- *
- * @param obj
- * @returns is it a JWKKeyPair?
- */
-// deno-lint-ignore no-explicit-any
-function isJWKKeyPair(obj) {
-    return obj.public !== undefined;
-}
-/**
- * Typeguard for a Multikey Pair.
- * It is not really elaborate, it only tries to differentiate between a single Multikey and a Key Pair.
- *
- * @param obj
- * @returns is it a MultikeyPair?
- */
-// deno-lint-ignore no-explicit-any
-function isMultikeyPair(obj) {
-    return obj.publicKeyMultibase !== undefined;
-}
 /************************************************************************* */
 /* Values to handle the various preamble bytes for the different key types */
 /************************************************************************* */
 /**
- * Names for the various crypto curves
+ * Names for the various crypto curve
  */
 var CryptoCurves;
 (function (CryptoCurves) {
@@ -49,28 +29,28 @@ var CryptoKeyTypes;
     CryptoKeyTypes["SECRET"] = "secret";
 })(CryptoKeyTypes || (exports.CryptoKeyTypes = CryptoKeyTypes = {}));
 /**
- * Preamble value for ECDSA, a.k.a. ed25519 curve
+ * Preamble value for EDDSA, a.k.a. `ed25519` curve
  */
 exports.EddsaPreambles = {
     public: [0xed, 0x01],
     secret: [0x80, 0x26],
 };
 /**
- * Preamble for ECDSA P-256, a.k.a. secp256r1 curve
+ * Preamble for ECDSA `P-256`, a.k.a. `secp256r1` curve
  */
 exports.Ecdsa256Preambles = {
     public: [0x80, 0x24],
     secret: [0x86, 0x26],
 };
 /**
- * Preamble for ECDSA P-256, a.k.a. secp384r1 curve
+ * Preamble for ECDSA `P-384`, a.k.a. `secp384r1` curve
  */
 exports.Ecdsa384Preambles = {
     public: [0x81, 0x24],
     secret: [0x87, 0x26],
 };
 /**
- * What preambles must be used for a Curve (data)?
+ * What preambles must be used for a Curve?
  */
 exports.classToPreamble = {
     [CryptoCurves.EDDSA]: exports.EddsaPreambles,
@@ -78,7 +58,7 @@ exports.classToPreamble = {
     [CryptoCurves.ECDSA_384]: exports.Ecdsa384Preambles,
 };
 /**
- * hat coder function must be used to convert from Multikey to JWK (data)?
+ * What coder function must be used to convert from Multikey to JWK (data)?
  */
 exports.classToDecoder = {
     [CryptoCurves.EDDSA]: eddsa.multikeyBinaryToJWK,
@@ -86,7 +66,7 @@ exports.classToDecoder = {
     [CryptoCurves.ECDSA_384]: ecdsa.multikeyBinaryToJWK,
 };
 /**
- * What coder function must be used to convert from JWK to Multikey (data)?
+ * What coder function must be used to convert from JWK to Multikey?
  */
 exports.classToEncoder = {
     [CryptoCurves.EDDSA]: eddsa.JWKToMultikeyBinary,
@@ -100,8 +80,8 @@ exports.classToEncoder = {
 exports.ECDSACurves = [CryptoCurves.ECDSA_256, CryptoCurves.ECDSA_384];
 /**
  * Classify the crypto key based on the multikey preamble characters that are at the start of the code.
- * These are two binary numbers, signalling the crypto class (ecdsa or eddsa) and, in the former case,
- * the hash function.
+ * These are two binary numbers, signalling the crypto category (`ecdsa` or `eddsa`) and, in the former case,
+ * the additional reference to the exact curve.
  *
  * @param preamble
  * @returns

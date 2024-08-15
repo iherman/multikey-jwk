@@ -124,7 +124,7 @@ export const classToPreamble: ClassToPreamble = {
  * Type definition for the table mapping curves to their decoder functions (i.e., mapping the Multikey to JWK).
  */
 export type ClassToDecoder = {
-    [key in CryptoCurves]: (keyCurve: CryptoCurves, x: Uint8Array, d?: Uint8Array) => JWKKeyPair;
+    [key in CryptoCurves]: (curve: CryptoCurves, x: Uint8Array, d?: Uint8Array) => JWKKeyPair;
 }
 
 /**
@@ -140,7 +140,7 @@ export const classToDecoder: ClassToDecoder = {
  * Type definition for the table mapping curves to their encoder functions (i.e., mapping the JWK to Multikey).
  */
 export type ClassToEncoder = {
-    [key in CryptoCurves]: (keyCurve: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, _y?: Uint8Array) => MultikeyBinary
+    [key in CryptoCurves]: (curve: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, _y?: Uint8Array) => MultikeyBinary
 }
 
 /**
@@ -170,8 +170,8 @@ export interface CryptoKeyData {
 
 /**
  * Classify the crypto key based on the multikey preamble characters that are at the start of the code. 
- * These are two binary numbers, signalling the crypto class (ecdsa or eddsa) and, in the former case, 
- * the hash function.
+ * These are two binary numbers, signalling the crypto category (`ecdsa` or `eddsa`) and, in the former case, 
+ * the additional reference to the exact curve.
  * 
  * @param preamble 
  * @returns 

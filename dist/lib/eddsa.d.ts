@@ -4,7 +4,7 @@
  *
  * @module
  */
-import { JWKKeyPair, MultikeyPairBinary, CryptoCurves } from "./common";
+import { JWKKeyPair, MultikeyBinary, CryptoCurves } from "./common";
 /**
  * Convert the Crypto values from JWK to the equivalent Multikey Pairs' binary data.
  * The final encoding, with preambles, are done in the general level.
@@ -12,13 +12,13 @@ import { JWKKeyPair, MultikeyPairBinary, CryptoCurves } from "./common";
  * For EDDSA, this is essentially, an empty function, which simply returns the `x` and `d` values. The
  * interface is there to be reused by the ECDSA equivalent, which must do some extra processing.
  *
- * @param _cl - unused in this function, just a placeholder
+ * @param _curve - unused in this function, just a placeholder
  * @param x - x value for the elliptical curve, as extracted from JWK
  * @param d - d (private) value for the elliptical curve, as extracted from JWK
  * @param _y - unused in this function, just a placeholder
  * @returns
  */
-export declare function JWKToMultikeyBinary(_cl: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, _y?: Uint8Array): MultikeyPairBinary;
+export declare function JWKToMultikeyBinary(_curve: CryptoCurves, x: Uint8Array, d: Uint8Array | undefined, _y?: Uint8Array): MultikeyBinary;
 /**
  * Convert the multikey values to their JWK equivalents. The final `x` and `d` values are encoded
  * in base64 and then the relevant JWK structure are created
@@ -27,9 +27,9 @@ export declare function JWKToMultikeyBinary(_cl: CryptoCurves, x: Uint8Array, d:
  * constant JWK structure. The interface is there to be reused by the ECDSA equivalent, which must
  * do some extra processing.
  *
- * @param _cl - unused in this function, just a placeholder
+ * @param _curve - unused in this function, just a placeholder
  * @param xb - binary version of the x value for the elliptical curve
  * @param db - binary version of the d value for the elliptical curve
  * @returns
  */
-export declare function multikeyBinaryToJWK(_cl: CryptoCurves, xb: Uint8Array, db?: Uint8Array): JWKKeyPair;
+export declare function multikeyBinaryToJWK(_curve: CryptoCurves, xb: Uint8Array, db?: Uint8Array): JWKKeyPair;

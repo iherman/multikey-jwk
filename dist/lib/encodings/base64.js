@@ -1,12 +1,14 @@
 "use strict";
-/*************************************************************************************************/
-/*                                       Base64 Encoding                                         */
-/*************************************************************************************************/
+/**
+ * Base 64 encoding/decoding
+ *
+ * @module
+ */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.encode = encode;
 exports.decode = decode;
 /*
- * These two came from perplexity, hopefully it is correct...
+ * These two came from perplexity.io, hopefully it is correct...
  */
 const base64ToUrl = (base64String) => {
     return base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
@@ -17,7 +19,7 @@ const urlToBase64 = (base64Url) => {
 /**
  * Convert an array buffer to base64url value.
  *
- * (Created with the help of chatgpt...)
+ * (Created with the help of perplexity.io...)
  *
  * @param arrayBuffer
  * @returns
@@ -33,7 +35,7 @@ function encode(bytes) {
 /**
  * Convert a base64url value to Uint8Array
  *
- * (Created with the help of chatgpt...)
+ * (Created with the help of perplexity.io...)
  *
  * @param string
  * @returns
