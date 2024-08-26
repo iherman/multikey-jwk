@@ -23,7 +23,7 @@ function multikeyToJWK(keys) {
         return jwk_keys;
     }
     else {
-        return jwk_keys.public;
+        return jwk_keys.publicKey;
     }
 }
 // Implementation of the overloaded functions
@@ -32,10 +32,10 @@ async function multikeyToCrypto(keys) {
     const jwkPair = multikeyToJWK(input);
     const algorithm = { name: "" };
     // We have to establish what the algorithm type is from the public jwk
-    switch (jwkPair.public.kty) {
+    switch (jwkPair.publicKey.kty) {
         case 'EC':
             algorithm.name = "ECDSA";
-            algorithm.namedCurve = jwkPair.public.crv;
+            algorithm.namedCurve = jwkPair.publicKey.crv;
             break;
         case 'OKP':
             algorithm.name = "Ed25519";
@@ -47,11 +47,11 @@ async function multikeyToCrypto(keys) {
             throw new Error("Unknown kty value for the JWK key");
     }
     const output = {
-        publicKey: await crypto.subtle.importKey("jwk", jwkPair.public, algorithm, true, ["verify"]),
+        publicKey: await crypto.subtle.importKey("jwk", jwkPair.publicKey, algorithm, true, ["verify"]),
         privateKey: undefined,
     };
-    if (jwkPair.secret != undefined) {
-        output.privateKey = await crypto.subtle.importKey("jwk", jwkPair.secret, algorithm, true, ["sign"]);
+    if (jwkPair.privateKey != undefined) {
+        output.privateKey = await crypto.subtle.importKey("jwk", jwkPair.privateKey, algorithm, true, ["sign"]);
     }
     // Got the return, the type depends on the overloaded input type
     if (isMultikeyPair(keys)) {
@@ -64,9 +64,9 @@ async function multikeyToCrypto(keys) {
 // Implementation of the overloaded functions
 function JWKToMultikey(keys) {
     function isJWKKeyPair(obj) {
-        return obj.public !== undefined;
+        return obj.publicKey !== undefined;
     }
-    const input = isJWKKeyPair(keys) ? keys : { public: keys };
+    const input = isJWKKeyPair(keys) ? keys : { publicKey: keys };
     const m_keys = convert.JWKToMultikey(input);
     if (isJWKKeyPair(keys)) {
         return m_keys;
@@ -84,10 +84,10 @@ async function cryptoToMultikey(keys) {
     const input = isPair ? keys : { publicKey: keys, privateKey: undefined };
     // Generate the JWK version of the cryptokeys: 
     const jwkKeyPair = {
-        public: await crypto.subtle.exportKey("jwk", input.publicKey),
+        publicKey: await crypto.subtle.exportKey("jwk", input.publicKey),
     };
     if (isPair && input.privateKey !== undefined) {
-        jwkKeyPair.secret = await crypto.subtle.exportKey("jwk", input.privateKey);
+        jwkKeyPair.privateKey = await crypto.subtle.exportKey("jwk", input.privateKey);
     }
     // Ready for conversion
     const output = JWKToMultikey(jwkKeyPair);

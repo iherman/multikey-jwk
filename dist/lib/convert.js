@@ -121,10 +121,10 @@ function JWKToMultikey(keys) {
             throw new Error(`No kty value for the key (${JSON.stringify(key)})`);
         }
     };
-    const publicKeyCurve = keyCurve(keys.public);
+    const publicKeyCurve = keyCurve(keys.publicKey);
     // The secret key class is calculated, but this is just for checking; the two must be identical...
-    if (keys.secret !== undefined) {
-        const secretKeyCurve = keyCurve(keys.secret);
+    if (keys.privateKey !== undefined) {
+        const secretKeyCurve = keyCurve(keys.privateKey);
         if (publicKeyCurve !== secretKeyCurve) {
             throw new Error(`Public and private keys refer to different EC curves (${JSON.stringify(keys)})`);
         }
@@ -132,16 +132,16 @@ function JWKToMultikey(keys) {
     // The cryptokey values are x, y (for ecdsa), and d (for the secret key).
     // Each of these are base 64 encoded strings; what we need is the 
     // binary versions thereof.
-    const x = decodeJWKField(keys.public.x);
+    const x = decodeJWKField(keys.publicKey.x);
     if (x === undefined) {
-        throw new Error(`x value is missing from public key (${JSON.stringify(keys.public)})`);
+        throw new Error(`x value is missing from public key (${JSON.stringify(keys.publicKey)})`);
     }
-    const y = decodeJWKField(keys.public.y);
+    const y = decodeJWKField(keys.publicKey.y);
     if (common_1.ECDSACurves.includes(publicKeyCurve) && y === undefined) {
-        throw new Error(`y value is missing from the ECDSA public key (${JSON.stringify(keys.public)})`);
+        throw new Error(`y value is missing from the ECDSA public key (${JSON.stringify(keys.publicKey)})`);
     }
-    const d = (keys.secret) ? decodeJWKField(keys.secret.d) : undefined;
-    if (keys.secret && d === undefined) {
+    const d = (keys.privateKey) ? decodeJWKField(keys.privateKey.d) : undefined;
+    if (keys.privateKey && d === undefined) {
         throw new Error(`d value is missing from private key  (${JSON.stringify(keys)})`);
     }
     const converter = common_1.classToEncoder[publicKeyCurve];

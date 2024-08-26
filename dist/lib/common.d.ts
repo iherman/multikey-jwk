@@ -6,8 +6,8 @@
  * Public/secret pair of JWK instances
  */
 export interface JWKKeyPair {
-    public: JsonWebKey;
-    secret?: JsonWebKey;
+    publicKey: JsonWebKey;
+    privateKey?: JsonWebKey;
 }
 /**
  * Type for a Multibase
@@ -33,7 +33,7 @@ export interface MultikeyBinary {
 /************************************************************************* */
 /************************************************************************* */
 /**
- * Names for the various crypto curve
+ * Names for the various crypto curves
  */
 export declare enum CryptoCurves {
     ECDSA_384 = "secp384r1",
@@ -108,7 +108,7 @@ export declare const classToEncoder: ClassToEncoder;
  */
 export declare const ECDSACurves: CryptoCurves[];
 /**
- * This is an internal type, used for the implementation: return the crypto curve and type from a preamble.
+ * This is an internal type, used for the implementation: return the crypto curve and type from a multikey preamble.
  *
  * So far, I have not yet found a way to encode that in a simple table, hence the separate function.
  */

@@ -12,7 +12,7 @@ const ecdsa = require("./ecdsa");
 /* Values to handle the various preamble bytes for the different key types */
 /************************************************************************* */
 /**
- * Names for the various crypto curve
+ * Names for the various crypto curves
  */
 var CryptoCurves;
 (function (CryptoCurves) {

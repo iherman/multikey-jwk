@@ -58,7 +58,7 @@ function multikeyBinaryToJWK(curve, xb, db) {
     const x = base64.encode(uncompressed.x);
     const y = base64.encode(uncompressed.y);
     const output = {
-        public: {
+        publicKey: {
             kty: "EC",
             crv: (curve === common_1.CryptoCurves.ECDSA_256) ? "P-256" : "P-384",
             x,
@@ -70,7 +70,7 @@ function multikeyBinaryToJWK(curve, xb, db) {
         }
     };
     if (db !== undefined) {
-        output.secret = {
+        output.privateKey = {
             kty: "EC",
             crv: (curve === common_1.CryptoCurves.ECDSA_256) ? "P-256" : "P-384",
             x,

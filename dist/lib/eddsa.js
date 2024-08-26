@@ -38,7 +38,7 @@ function JWKToMultikeyBinary(_curve, x, d, _y) {
 function multikeyBinaryToJWK(_curve, xb, db) {
     const x = base64.encode(xb);
     const output = {
-        public: {
+        publicKey: {
             kty: "OKP",
             crv: "Ed25519",
             x,
@@ -49,7 +49,7 @@ function multikeyBinaryToJWK(_curve, xb, db) {
         }
     };
     if (db !== undefined) {
-        output.secret = {
+        output.privateKey = {
             kty: "OKP",
             crv: "Ed25519",
             x,
