@@ -92,7 +92,7 @@ export async function multikeyToCrypto(keys: Multikey | Multibase): Promise<Cryp
         default:
             // In fact, this does not happen; the JWK comes from our own
             // generation, that raises an error earlier in this case.
-            // But this keeps typescript happy...
+            // But this keeps the typescript code checker happy...
             throw new Error("Unknown kty value for the JWK key");
     }
 
@@ -100,6 +100,7 @@ export async function multikeyToCrypto(keys: Multikey | Multibase): Promise<Cryp
         publicKey : await crypto.subtle.importKey("jwk", jwkPair.publicKey, algorithm, true, ["verify"]),
         privateKey : undefined,
     }
+
     if (jwkPair.privateKey != undefined) {
         output.privateKey = await crypto.subtle.importKey("jwk", jwkPair.privateKey, algorithm, true, ["sign"])
     }

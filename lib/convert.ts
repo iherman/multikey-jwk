@@ -41,17 +41,17 @@ export function multikeyToJWK(keys: Multikey): JWKKeyPair {
     const convertBinary = (key: Multibase): MultikeyData => {
         // Check whether the first character is a 'z' before removing it
         if (key[0] === 'z') {
-            const unencoded_key: Uint8Array = base58.decode(key.slice(1));
+            const plain_key: Uint8Array = base58.decode(key.slice(1));
             return {
-                preamble  : [unencoded_key[0], unencoded_key[1]],
-                keyBinary : unencoded_key.slice(2),
+                preamble  : [plain_key[0], plain_key[1]],
+                keyBinary : plain_key.slice(2),
             };
         } else {
             throw new Error(`"${key}" is not encoded as required (first character should be a 'z')`);
         }
     };
 
-    // Get the the public values values...
+    // Get the public values...
     const publicBinary = convertBinary(keys.publicKeyMultibase);
     // ... and find out, based on the preamble, which curve is used and whether it is indeed public
     const publicData: CryptoKeyData = preambleToCryptoData(publicBinary.preamble);
