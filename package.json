@@ -1,7 +1,7 @@
 {
   "name": "multikey-webcrypto",
-  "version": "0.5.1",
-  "date": "2024-08-26",
+  "version": "0.5.2",
+  "date": "2024-11-12",
   "description": "Conversions to and from multikeys and WebCrypto, using the EC curves defined for Verifiable Credentials.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -37,7 +37,8 @@
     "node": ">=22.6.0"
   },
   "dependencies": {
-    "@noble/curves": "^1.5.0"
+    "@noble/curves": "^1.5.0",
+    "@scure/base": "^1.1.9"
   },
   "devDependencies": {
     "@types/node": "^22.3.0",
