@@ -43,7 +43,7 @@ async function multikeyToCrypto(keys) {
         default:
             // In fact, this does not happen; the JWK comes from our own
             // generation, that raises an error earlier in this case.
-            // But this keeps typescript happy...
+            // But this keeps the typescript code checker happy...
             throw new Error("Unknown kty value for the JWK key");
     }
     const output = {

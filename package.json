@@ -1,7 +1,7 @@
 {
   "name": "multikey-webcrypto",
-  "version": "0.5.3",
-  "date": "2024-11-12",
+  "version": "0.5.4",
+  "date": "2024-11-21",
   "description": "Conversions to and from multikeys and WebCrypto, using the EC curves defined for Verifiable Credentials.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

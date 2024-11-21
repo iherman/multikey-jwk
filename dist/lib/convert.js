@@ -8,8 +8,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.multikeyToJWK = multikeyToJWK;
 exports.JWKToMultikey = JWKToMultikey;
 const common_1 = require("./common");
-const base58 = require("./encodings/base58/index");
-const base64 = require("./encodings/base64");
+const base_1 = require("@scure/base");
 /****************************************************************************************/
 /* The real converter functions                                                         */
 /****************************************************************************************/
@@ -30,17 +29,17 @@ function multikeyToJWK(keys) {
     const convertBinary = (key) => {
         // Check whether the first character is a 'z' before removing it
         if (key[0] === 'z') {
-            const unencoded_key = base58.decode(key.slice(1));
+            const plain_key = base_1.base58.decode(key.slice(1));
             return {
-                preamble: [unencoded_key[0], unencoded_key[1]],
-                keyBinary: unencoded_key.slice(2),
+                preamble: [plain_key[0], plain_key[1]],
+                keyBinary: plain_key.slice(2),
             };
         }
         else {
             throw new Error(`"${key}" is not encoded as required (first character should be a 'z')`);
         }
     };
-    // Get the the public values values...
+    // Get the public values...
     const publicBinary = convertBinary(keys.publicKeyMultibase);
     // ... and find out, based on the preamble, which curve is used and whether it is indeed public
     const publicData = (0, common_1.preambleToCryptoData)(publicBinary.preamble);
@@ -84,14 +83,14 @@ function JWKToMultikey(keys) {
     // Internal function for the common last step of encoding a multikey
     const encodeMultikey = (val, preamble) => {
         const val_mk = new Uint8Array([...preamble, ...val]);
-        return 'z' + base58.encode(val_mk);
+        return 'z' + base_1.base58.encode(val_mk);
     };
     const decodeJWKField = (val) => {
         if (val === undefined) {
             return undefined;
         }
         else {
-            return base64.decode(val);
+            return base_1.base64urlnopad.decode(val);
         }
     };
     // Find out the key curve, will be used for branching later: is it ECDSA or EDDSA and, if the former,

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JWKToMultikeyBinary = JWKToMultikeyBinary;
 exports.multikeyBinaryToJWK = multikeyBinaryToJWK;
-const base64 = require("./encodings/base64");
+const base_1 = require("@scure/base");
 /**
  * Convert the Crypto values from JWK to the equivalent Multikey Pairs' binary data.
  * The final encoding, with preambles, are done in the general level.
@@ -36,7 +36,7 @@ function JWKToMultikeyBinary(_curve, x, d, _y) {
  * @returns
  */
 function multikeyBinaryToJWK(_curve, xb, db) {
-    const x = base64.encode(xb);
+    const x = base_1.base64urlnopad.encode(xb);
     const output = {
         publicKey: {
             kty: "OKP",
@@ -53,7 +53,7 @@ function multikeyBinaryToJWK(_curve, xb, db) {
             kty: "OKP",
             crv: "Ed25519",
             x,
-            d: base64.encode(db),
+            d: base_1.base64urlnopad.encode(db),
             key_ops: [
                 "sign"
             ],

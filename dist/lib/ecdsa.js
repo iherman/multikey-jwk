@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JWKToMultikeyBinary = JWKToMultikeyBinary;
 exports.multikeyBinaryToJWK = multikeyBinaryToJWK;
 const common_1 = require("./common");
-const base64 = require("./encodings/base64");
+const base_1 = require("@scure/base");
 /**
  * Convert the Crypto values from JWK to the equivalent Multikey Pairs' binary data.
  * The final encoding, with preambles, are done in the general level.
@@ -55,8 +55,8 @@ function multikeyBinaryToJWK(curve, xb, db) {
     // The extra complication with ECDSA: the multikey is the compressed 'x' value, the 'y' value
     // must be calculated.
     const uncompressed = uncompressPublicKey(curve, xb);
-    const x = base64.encode(uncompressed.x);
-    const y = base64.encode(uncompressed.y);
+    const x = base_1.base64urlnopad.encode(uncompressed.x);
+    const y = base_1.base64urlnopad.encode(uncompressed.y);
     const output = {
         publicKey: {
             kty: "EC",
@@ -75,7 +75,7 @@ function multikeyBinaryToJWK(curve, xb, db) {
             crv: (curve === common_1.CryptoCurves.ECDSA_256) ? "P-256" : "P-384",
             x,
             y,
-            d: base64.encode(db),
+            d: base_1.base64urlnopad.encode(db),
             key_ops: [
                 "sign"
             ],
@@ -98,14 +98,6 @@ function uint8ArrayToHex(uint8Array) {
     return Array.from(uint8Array)
         .map((byte) => byte.toString(16).padStart(2, '0'))
         .join('');
-}
-// Utility function to convert hex string to Uint8Array
-function hexToUint8Array(hex) {
-    const result = new Uint8Array(hex.length / 2);
-    for (let i = 0; i < hex.length; i += 2) {
-        result[i / 2] = parseInt(hex.substr(i, 2), 16);
-    }
-    return result;
 }
 /**
  * Compress the public key. Could be done "manually" (look at the parity of the `y` value, and add a byte at the start of the `x`), but
@@ -133,7 +125,7 @@ function compressPublicKey(curve, x, y) {
 function uncompressPublicKey(curve, compressedKey) {
     const point = (curve === common_1.CryptoCurves.ECDSA_256) ? p256_1.p256.ProjectivePoint.fromHex(compressedKey) : p384_1.p384.ProjectivePoint.fromHex(compressedKey);
     const uncompressedKey = point.toRawBytes(false);
-    // The 'uncompressed key is a concatenation of the x and y values, plus an extra value at the start. The latter must be disposed off, and
+    // The uncompressed key is a concatenation of the x and y values, plus an extra value at the start. The latter must be disposed off, and
     // the remaining array to be cut into two.
     const keyLength = (curve === common_1.CryptoCurves.ECDSA_256) ? 32 : 48;
     const joinedXY = uncompressedKey.slice(1);
