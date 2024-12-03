@@ -1,4 +1,11 @@
 
+# THIS VERSION IS NOW OUTDATED
+
+I have recently moved the development of this package to [deno](https://deno.land), which is a fork of this repository but 
+relying on deno for the development and also the generation of the documentation and the generation of the NPM package. 
+The new version is at the ["sister" repository `multikey-webcrypto-d`](https://github.com/iherman/multikey-webcrypto-d), and this
+repository is now archived. (Note that the NPM package name is unchanged.)
+
 --- NOT PRODUCTION READY ---
 
 # Multikey ↔︎ WebCrypto and JWK conversions (Node.js version)
